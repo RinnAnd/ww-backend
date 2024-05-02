@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"github.com/RinnAnd/ww-backend/server"
+)
 
 func main() {
-	fmt.Println("[App] Starting on port 8080...")
+	server := server.NewServer(":8080")
+	server.Start()
 }

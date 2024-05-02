@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/RinnAnd/ww-backend/server"
+	"ww-backend/server"
 )
 
 func main() {
 	server := server.NewServer(":8080")
+	server.RegisterRoutes()
 	server.Start()
 }

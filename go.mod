@@ -1,3 +1,5 @@
-module github.com/RinnAnd/ww-backend
+module ww-backend
 
 go 1.22.0
+
+require github.com/gorilla/mux v1.8.1

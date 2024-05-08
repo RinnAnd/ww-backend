@@ -1,7 +1,7 @@
 package main
 
 import (
-	"ww-backend/server"
+	"github.com/RinnAnd/ww-backend/server"
 )
 
 func main() {

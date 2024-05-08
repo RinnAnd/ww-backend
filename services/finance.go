@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"ww-backend/models"
+	"github.com/RinnAnd/ww-backend/models"
 )
 
 type FinanceService struct {

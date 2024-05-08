@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"ww-backend/services"
+	"github.com/RinnAnd/ww-backend/services"
 )
 
 type Server struct {

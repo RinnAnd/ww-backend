@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"ww-backend/models"
+	"github.com/RinnAnd/ww-backend/models"
 )
 
 type UserService struct {

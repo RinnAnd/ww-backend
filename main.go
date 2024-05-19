@@ -5,7 +5,8 @@ import (
 )
 
 func main() {
-	server := server.NewServer(":8080")
+	conn := server.Pool()
+	server := server.NewServer(":8080", conn)
 	server.RegisterRoutes()
 	server.Start()
 }

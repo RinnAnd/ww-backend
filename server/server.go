@@ -1,6 +1,7 @@
 package server
 
 import (
+	"database/sql"
 	"fmt"
 	"net/http"
 
@@ -10,6 +11,10 @@ import (
 type Server struct {
 	httpServer *http.Server
 	gateWay    *Gateway
+}
+
+func (s *Server) Pong(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Pong")
 }
 
 type Gateway struct {
@@ -22,8 +27,8 @@ func NewGateway(us *services.UserService) *Gateway {
 	}
 }
 
-func NewServer(addr string) *Server {
-	userService := *services.MakeUserService()
+func NewServer(addr string, pool *sql.DB) *Server {
+	userService := *services.MakeUserService(pool)
 	return &Server{
 		httpServer: &http.Server{
 			Addr: addr,
@@ -39,4 +44,8 @@ func (s *Server) Start() error {
 
 func (s *Server) Register(w http.ResponseWriter, r *http.Request) {
 	s.gateWay.UserService.CreateUser(w, r)
+}
+
+func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
+	s.gateWay.UserService.Auth(w, r)
 }

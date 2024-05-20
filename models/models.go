@@ -25,7 +25,6 @@ type Finance struct {
 	Month  int    `json:"month"`
 	Year   int    `json:"year"`
 	Salary int    `json:"salary"`
-	Saving string `json:"savings_id"`
 }
 
 type Expense struct {
@@ -37,6 +36,7 @@ type Expense struct {
 }
 
 type Saving struct {
-	ID     string `json:"id"`
-	Amount int    `json:"amount"`
+	ID      string `json:"id"`
+	Finance string `json:"finance_id"`
+	Amount  int    `json:"amount"`
 }

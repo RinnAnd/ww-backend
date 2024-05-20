@@ -10,6 +10,7 @@ import (
 )
 
 func Pool() *sql.DB {
+	fmt.Println("Initializing database connection...")
 	godotenv.Load()
 	user := os.Getenv("PG_USER")
 	dbname := os.Getenv("DB_NAME")
@@ -22,46 +23,12 @@ func Pool() *sql.DB {
 		panic("Could not connect to the database")
 	}
 
-	db.Exec(`
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY DEFAULT uuid_generate_v4(),
-		username TEXT NOT NULL,
-    name TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL
-)`)
+	where, err := TableMaker(db)
+	if err != nil {
+		fmt.Println(where)
+		fmt.Println(err)
+		panic("There was an error creating the tables")
+	}
 
-	db.Exec(`
-CREATE TABLE IF NOT EXISTS friendships (
-    id SERIAL PRIMARY KEY DEFAULT uuid_generate_v4(),
-    FOREIGN KEY (user_id1) REFERENCES users (id),
-    FOREIGN KEY (user_id2) REFERENCES users (id)
-)`)
-
-	db.Exec(`
-CREATE TABLE IF NOT EXISTS finances (
-    id SERIAL PRIMARY KEY DEFAULT uuid_generate_v4(),
-    FOREIGN KEY (user_id) REFERENCES users (id),
-		month INTEGER,
-		year INTEGER,
-		salary INTEGER,
-    FOREIGN KEY (saving) REFERENCES savings (id),
-)`)
-
-	db.Exec(`
-CREATE TABLE IF NOT EXISTS expenses (
-    id SERIAL PRIMARY KEY DEFAULT uuid_generate_v4(),
-    FOREIGN KEY (user_id) REFERENCES users (id),
-    amount DECIMAL,
-)`)
-
-	db.Exec(`
-CREATE TABLE IF NOT EXISTS savings (
-    id SERIAL PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id INTEGER,
-    amount DECIMAL,
-    FOREIGN KEY (user_id) REFERENCES users (id)
-)`)
 	return db
 }

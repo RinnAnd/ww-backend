@@ -24,26 +24,46 @@ func (us *UserService) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = us.sql.Exec("INSERT INTO users VALUES (username = $1, name = $2, email = $3, password = $4)", user.UserName, user.Name, user.Email, user.Password)
+	_, err = us.sql.Exec("INSERT INTO users (username, name, email, password) VALUES ($1, $2, $3, $4)", user.UserName, user.Name, user.Email, user.Password)
 	if err != nil {
 		http.Error(w, "There was an error inserting user", http.StatusBadRequest)
 		return
 	}
 
+	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(utils.Response{
-		Status:  200,
+		Status:  http.StatusCreated,
 		Message: "User created",
 		Data:    user,
 	})
 }
 
 func (us *UserService) Auth(w http.ResponseWriter, r *http.Request) {
-	user := models.Login{}
+	login := models.Login{}
+	var password string
 
-	json.NewDecoder(r.Body).Decode(&user)
+	json.NewDecoder(r.Body).Decode(&login)
 
-	success := utils.CheckPasswordHash(user.Password, "")
+	rows, err := us.sql.Query("SELECT password FROM users WHERE email = $1", login.Email)
+	if err != nil {
+		json.NewEncoder(w).Encode("There was an error fetching the user")
+		return
+	}
 
+	if rows.Next() {
+		err := rows.Scan(&password)
+		if err != nil {
+			json.NewEncoder(w).Encode("There was an error fetching the password")
+		}
+	} else {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode("User not found")
+		return
+	}
+
+	success := utils.CheckPasswordHash(login.Password, password)
+
+	//! Return a user auth with a token
 	json.NewEncoder(w).Encode(success)
 }
 

@@ -13,6 +13,13 @@ type Login struct {
 	Password string
 }
 
+type Session struct {
+	ID       string
+	UserName string
+	Name     string
+	Email    string
+}
+
 type Friendship struct {
 	ID      string `json:"id"`
 	UserID1 string `json:"user_id1"`
@@ -27,11 +34,20 @@ type Finance struct {
 	Salary int    `json:"salary"`
 }
 
+type FullFinance struct {
+	ID       string
+	UserID   string
+	Month    int
+	Year     int
+	Salary   int
+	Expenses []Expense
+}
+
 type Expense struct {
 	ID       string `json:"id"`
 	Finance  string `json:"finance_id"`
 	Name     string `json:"name"`
-	Ammount  int    `json:"ammount"`
+	Amount   int    `json:"amount"`
 	Category string `json:"category"`
 }
 

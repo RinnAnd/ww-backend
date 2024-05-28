@@ -72,3 +72,7 @@ func (s *Server) UserFinances(w http.ResponseWriter, r *http.Request) {
 func (s *Server) NewExpense(w http.ResponseWriter, r *http.Request) {
 	s.gateWay.FinanceService.CreateExpense(w, r)
 }
+
+func (s *Server) NewSaving(w http.ResponseWriter, r *http.Request) {
+	s.gateWay.FinanceService.CreateSaving(w, r)
+}

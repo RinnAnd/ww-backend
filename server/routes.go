@@ -15,6 +15,7 @@ func (s *Server) RegisterRoutes() {
 	router.HandleFunc("/finance", s.NewFinance).Methods("POST")
 	router.HandleFunc("/finance/{id}", s.UserFinances).Methods("GET")
 	router.HandleFunc("/expense", s.NewExpense).Methods("POST")
+	router.HandleFunc("/saving", s.NewSaving).Methods("POST")
 
 	s.httpServer.Handler = router
 }

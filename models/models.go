@@ -34,6 +34,16 @@ type Finance struct {
 	Salary int    `json:"salary"`
 }
 
+type RelFinance struct {
+	ID       string     `json:"id"`
+	UserID   string     `json:"user_id"`
+	Month    int        `json:"month"`
+	Year     int        `json:"year"`
+	Salary   int        `json:"salary"`
+	Expenses []*Expense `json:"expenses"`
+	Savings  []*Saving  `json:"savings"`
+}
+
 type Expense struct {
 	ID       string `json:"id"`
 	Finance  string `json:"finance_id"`

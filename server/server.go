@@ -1,10 +1,10 @@
 package server
 
 import (
-	"database/sql"
 	"fmt"
 	"net/http"
 
+	"github.com/RinnAnd/ww-backend/database"
 	"github.com/RinnAnd/ww-backend/services"
 )
 
@@ -29,9 +29,9 @@ func NewGateway(us *services.UserService, fs *services.FinanceService) *Gateway 
 	}
 }
 
-func NewServer(addr string, pool *sql.DB) *Server {
-	userService := *services.MakeUserService(pool)
-	financeService := *services.MakeFinanceService(pool)
+func New(addr string, db database.Database) *Server {
+	userService := *services.NewUserService(db)
+	financeService := *services.NewFinanceService(db)
 	return &Server{
 		httpServer: &http.Server{
 			Addr: addr,
